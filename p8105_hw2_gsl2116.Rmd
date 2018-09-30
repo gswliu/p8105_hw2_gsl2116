@@ -11,31 +11,25 @@ library(tidyverse)
 library(readxl)
 ```
 
-```{r load_data, include=FALSE}
-transit_data = read_csv(file = "./HW_Data/NYC_Transit_Subway_Entrance_And_Exit_Data.csv")
-  transit_data = janitor::clean_names(transit_data)
-  names(transit_data)
-```
-
 ## PROBLEM 1
-```{r clean_transit, results=FALSE}
-transit_data = select(transit_data, line, station_name, station_latitude, route1:route11, entry, entrance_type, vending, ada)
-
-recode(transit_data$entry, "YES" = TRUE, "NO" = FALSE)
+```{r clean_transit, eval=FALSE}
+transit_data = read_csv(file = "./HW_Data/NYC_Transit_Subway_Entrance_And_Exit_Data.csv") %>% 
+  janitor::clean_names() %>% 
+  select(line, station_name, station_latitude, route1:route11, entry, entrance_type, vending, ada) %>% 
+  mutate(entry = recode(entry, "YES" = TRUE, "NO" = FALSE))
 ```
+This dataset has 1868 observations and 18 variables (dimensions = 1868 x 18). From the original 32 variables in the dataset, I have only kept 18 that are of interest in my analysis: line, station, name, station latitude / longitude, routes served, entry, vending, entrance type, and ADA compliance. This data set includes character, integer, logical, and numeric variable types.  
 
-```{r transit_summary, include=FALSE}
-skimr::skim(transit_data)
+#### How many distinct stations are there?
+```{r distinct_stations}
+nrow(distinct(transit_data, line, station_name))
 ```
+There are `r nrow(distinct(transit_data, line, station_name))` distinct train stations.
 
-This dataset has 1868 observations and 18 variables (dimensions = 1868 x 18). From the original 32 variables in the dataset, I have only kept 18 that are of interest in my analysis: `select(transit_data, line, station_name, station_latitude, route1:route11, entry, entrance_type, vending, ada)`. This data set includes character, integer, logical, and numeric variable types.  
-
-### How many distinct stations are there?
-```{r}
-distinct()
+#### How many stations are ADA compliant?
+```{r ada_stations}
+nrow(distinct(filter(transit_data, ada == TRUE), line, station_name))
 ```
+Of these distinct stations, `r nrow(distinct(filter(transit_data, ada == TRUE), transit_data, line, station_name))` are ADA compliant.
 
-
-### How many stations are ADA compliant?
-
-### What proportion of station entrances / exits without vending allow entrance?
+#### What proportion of station entrances / exits without vending allow entrance?
