@@ -17,10 +17,25 @@ transit_data = read_csv(file = "./HW_Data/NYC_Transit_Subway_Entrance_And_Exit_D
   names(transit_data)
 ```
 
-# PROBLEM 1
-```{r}
+## PROBLEM 1
+```{r clean_transit, results=FALSE}
 transit_data = select(transit_data, line, station_name, station_latitude, route1:route11, entry, entrance_type, vending, ada)
 
-
+recode(transit_data$entry, "YES" = TRUE, "NO" = FALSE)
 ```
 
+```{r transit_summary, include=FALSE}
+skimr::skim(transit_data)
+```
+
+This dataset has 1868 observations and 18 variables (dimensions = 1868 x 18). From the original 32 variables in the dataset, I have only kept 18 that are of interest in my analysis: `select(transit_data, line, station_name, station_latitude, route1:route11, entry, entrance_type, vending, ada)`. This data set includes character, integer, logical, and numeric variable types.  
+
+### How many distinct stations are there?
+```{r}
+distinct()
+```
+
+
+### How many stations are ADA compliant?
+
+### What proportion of station entrances / exits without vending allow entrance?
