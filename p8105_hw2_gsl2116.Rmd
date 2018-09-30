@@ -12,7 +12,7 @@ library(readxl)
 ```
 
 ## PROBLEM 1
-```{r clean_transit, eval=FALSE}
+```{r clean_transit}
 transit_data = read_csv(file = "./HW_Data/NYC_Transit_Subway_Entrance_And_Exit_Data.csv") %>% 
   janitor::clean_names() %>% 
   select(line, station_name, station_latitude, route1:route11, entry, entrance_type, vending, ada) %>% 
@@ -21,15 +21,22 @@ transit_data = read_csv(file = "./HW_Data/NYC_Transit_Subway_Entrance_And_Exit_D
 This dataset has 1868 observations and 18 variables (dimensions = 1868 x 18). From the original 32 variables in the dataset, I have only kept 18 that are of interest in my analysis: line, station, name, station latitude / longitude, routes served, entry, vending, entrance type, and ADA compliance. This data set includes character, integer, logical, and numeric variable types.  
 
 #### How many distinct stations are there?
-```{r distinct_stations}
+```{r distinct_stations, eval=FALSE}
 nrow(distinct(transit_data, line, station_name))
 ```
 There are `r nrow(distinct(transit_data, line, station_name))` distinct train stations.
 
 #### How many stations are ADA compliant?
-```{r ada_stations}
+```{r ada_stations, eval=FALSE}
 nrow(distinct(filter(transit_data, ada == TRUE), line, station_name))
 ```
-Of these distinct stations, `r nrow(distinct(filter(transit_data, ada == TRUE), transit_data, line, station_name))` are ADA compliant.
+Of these `r nrow(distinct(transit_data, line, station_name))` distinct stations, `r nrow(distinct(filter(transit_data, ada == TRUE), transit_data, line, station_name))` are ADA compliant.
 
 #### What proportion of station entrances / exits without vending allow entrance?
+```{r entry_stations}
+transit_data %>%
+  group_by(vending, entry) %>%
+  summarise (n = n()) %>%
+  mutate(freq = n / sum(n))
+```
+Of station entrances/exits without vending, 0.377 allow entrance.
