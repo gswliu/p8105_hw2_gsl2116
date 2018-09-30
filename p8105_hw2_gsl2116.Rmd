@@ -7,6 +7,20 @@ output: github_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(readxl)
 ```
 
+```{r load_data, include=FALSE}
+transit_data = read_csv(file = "./HW_Data/NYC_Transit_Subway_Entrance_And_Exit_Data.csv")
+  transit_data = janitor::clean_names(transit_data)
+  names(transit_data)
+```
+
+# PROBLEM 1
+```{r}
+transit_data = select(transit_data, line, station_name, station_latitude, route1:route11, entry, entrance_type, vending, ada)
+
+
+```
 
