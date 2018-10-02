@@ -50,7 +50,10 @@ mrtrash_data =
   drop_na(dumpster) %>% 
   mutate(sports_balls = as.integer(round(sports_balls)))
 ```
-DESCRIPTIVE PARAGRAPH HERE ABOUT MR TRASH DATA.
+DESCRIPTIVE PARAGRAPH HERE ABOUT MR TRASH DATA.  
+Be sure to note the number of observations in both resulting datasets, and give examples of key variables. What was the median number of sports balls in a dumpster in 2016?
+
+The median number of sports balls in a dumpster in 2016 was 
 
 ```{r}
 precip_2016 =
@@ -70,4 +73,11 @@ precip_data =
   full_join(precip_2016, precip_2017) %>% 
   mutate(month = month.name[month])
 ```
+Be sure to note the number of observations in both resulting datasets, and give examples of key variables. For available data, what was the total precipitation in 2017? What was the median number of sports balls in a dumpster in 2016?
+
+```{r}
+median(mrtrash_data[mrtrash_data$year] == 2016, sports_balls)
+
+```
+
 
