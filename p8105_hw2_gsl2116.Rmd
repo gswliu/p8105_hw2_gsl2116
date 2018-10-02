@@ -11,7 +11,7 @@ library(tidyverse)
 library(readxl)
 ```
 
-## PROBLEM 1
+## Problem 1
 ```{r clean_transit}
 transit_data = read_csv(file = "./HW_Data/NYC_Transit_Subway_Entrance_And_Exit_Data.csv") %>% 
   janitor::clean_names() %>% 
@@ -40,3 +40,14 @@ transit_data %>%
   mutate(freq = n / sum(n))
 ```
 Of station entrances/exits without vending, 0.377 allow entrance.
+
+## Problem 2
+```{r clean_mrtrash}
+mrtrash_data =
+  read_excel("./HW_Data/HealthyHarborWaterWheelTotals2017-9-26.xlsx",
+             sheet = "Mr. Trash Wheel", skip = 1, col_names = TRUE, range = "A2:N256") %>% 
+  janitor::clean_names() %>% 
+  drop_na(dumpster) %>% 
+  mutate(sports_balls = as.integer(round(sports_balls)))
+```
+
