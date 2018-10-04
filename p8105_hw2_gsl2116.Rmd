@@ -91,13 +91,21 @@ brfss_data = brfss_smart2010 %>%
   spread(key = response, value = data_value)
 ```
 
-There are `r nrow(distinct(brfss_data, locationabbr))` unique locations included in the dataset. Every state, plus the District of Columbia, is represented. The state that is observed the most is `r names(which.max(table(brfss_data$locationabbr)))`. The median of the “Excellent” response value in 2002 is `r median(brfss_data$Excellent[brfss_data$year == 2002], na.rm = TRUE)`.
+There are `r nrow(distinct(brfss_data, locationdesc))` unique locations included in the dataset. There are `r nrow(distinct(brfss_data, locationabbr))` states (plus the District of Columbia) represented. The state that is observed the most is `r names(which.max(table(brfss_data$locationabbr)))`. The median of the “Excellent” response value in 2002 is `r median(brfss_data$Excellent[brfss_data$year == 2002], na.rm = TRUE)`.
 
-Histogram of “Excellent” response values in the year 2002:
+### Graphs
+#### “Excellent” response values, 2002
+“Excellent” response values in the year 2002
 ```{r}
 filter(brfss_data, year == 2002) %>% 
   ggplot(aes(x = Excellent)) +
   geom_histogram()
 ```
 
-Proportion of “Excellent” response values in New York County and Queens County (both in NY State) in each year from 2002 to 2010.  
+#### Proportion of “Excellent” response values
+Proportion of “Excellent” response values in New York County and Queens County (both in NY State) in each year from 2002 to 2010
+```{r}
+ny_excellent %>% 
+  separate(brfss_data, locationdesc, into = c("state", "county"), sep = "-") %>% 
+  filter(county == 'New York County' 'Queens County')
+```
