@@ -9,6 +9,7 @@ output: github_document
 knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(readxl)
+library(dplyr)
 library(ggridges)
 ```
 
@@ -105,7 +106,7 @@ filter(brfss_data, year == 2002) %>%
 #### Proportion of “Excellent” response values
 Proportion of “Excellent” response values in New York County and Queens County (both in NY State) in each year from 2002 to 2010
 ```{r}
-ny_excellent %>% 
-  separate(brfss_data, locationdesc, into = c("state", "county"), sep = "-") %>% 
-  filter(county == 'New York County' 'Queens County')
+ny_excellent = brfss_data %>% 
+  filter(locationdesc == "NY - New York County" | locationdesc == "NY - Queens County")
+
 ```
