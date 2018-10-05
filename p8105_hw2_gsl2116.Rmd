@@ -41,7 +41,7 @@ transit_data %>%
   summarise (n = n()) %>%
   mutate(freq = n / sum(n))
 ```
-Of station entrances/exits without vending, 0.377 allow entrance.
+Of station entrances/exits without vending, 37.7% allow entrance.
 
 ## Problem 2
 ```{r clean_mrtrash}
@@ -53,10 +53,7 @@ mrtrash_data =
   mutate(sports_balls = as.integer(round(sports_balls)))
 ```
 
-There are a total of 215 observations and 14 variables. 
-Be sure to note the number of observations in both resulting datasets, and give examples of key variables. 
-
-In 2016, the median number of sports balls in a dumpster was `r median(mrtrash_data$sports_balls[mrtrash_data$year == 2016], na.rm = TRUE)`.
+There are a total of 215 observations and 14 variables. This dataset provides data on the amount of plastic and glass bottles, cigarette butts, grocery and chip bags, polystyrene, and sports balls found in dumpsters between 2014 and 2017. The average weight (across all years) of trash within the dumpsters was `r mean(mrtrash_data$weight_tons)` tons. In 2017, there was an average of `r mean(mrtrash_data$weight_tons[mrtrash_data$year == 2017], na.rm = TRUE)` tons of trash in dumpsters. In 2016, the median number of sports balls in a dumpster was `r median(mrtrash_data$sports_balls[mrtrash_data$year == 2016], na.rm = TRUE)`. Within this period there were `r sum(mrtrash_data$homes_powered)` total homes powered by the trash found in dumpsters. In 2017 alone, there were `r round(sum(mrtrash_data$homes_powered[mrtrash_data$year == 2017], na.rm = TRUE))` homes powered.
 
 ```{r join_precip}
 precip_2016 =
@@ -76,7 +73,7 @@ precip_data =
   full_join(precip_2016, precip_2017) %>% 
   mutate(month = month.name[month])
 ```
-Be sure to note the number of observations in both resulting datasets, and give examples of key variables. For available data, what was the total precipitation in 2017? 
+There are a total of 24 observations (one per month in 2016 and 2017) and 3 variables in the combined precipitation dataset. The total precipitation was `r sum(precip_data$total[precip_data$year == 2017])` inches in 2017 and `r sum(precip_data$total[precip_data$year == 2016])` inches in 2016. The average amount of precipitation, rounded to the nearest inch, was `r round(mean(precip_data$total[precip_data$year == 2017]))` inches in 2017 and `r round(mean(precip_data$total[precip_data$year == 2016]))` inches in 2016.
 
 ## Problem 3
 ```{r brfss_setup, include=FALSE}
@@ -104,9 +101,17 @@ filter(brfss_data, year == 2002) %>%
 ```
 
 #### Proportion of “Excellent” response values
-Proportion of “Excellent” response values in New York County and Queens County (both in NY State) in each year from 2002 to 2010
+Proportion of “Excellent” response values in New York County and Queens County (in NY State), from 2002 to 2010
 ```{r}
 ny_excellent = brfss_data %>% 
   filter(locationdesc == "NY - New York County" | locationdesc == "NY - Queens County")
 
+ggplot(ny_excellent, aes(x = year, y = Excellent)) +
+  geom_point(aes(color = locationdesc)) +
+  labs(title = "Proportion of 'Excellent' Response Values",
+       y = "Proportion of responses (%)",
+       x = "Year") +
+  viridis::scale_color_viridis(name = "County", discrete = TRUE) +
+  theme_minimal() +
+  theme(legend.position = "bottom")
 ```
